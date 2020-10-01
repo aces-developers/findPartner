@@ -24,10 +24,10 @@ To see more on the project requirements, click on [this.link](requirements.md).
 
 # Wireframes
 
-![home01](assets/wireframe/home.png)
-![home01](assets/wireframe/Signup01.png)
-![home01](assets/wireframe/Signup02.png)
-![home01](assets/wireframe/login.png)
+![home01](/assets/wireframe/home.png)
+![home01](/assets/wireframe/Signup01.png)
+![home01](/assets/wireframe/Signup02.png)
+![home01](/assets/wireframe/login.png)
 
 # User Stories
 
@@ -35,7 +35,7 @@ To see more on the project requirements, click on [this.link](requirements.md).
 
 # ER diagram
 
-![domain](/wireframe/schema.jpeg)
+![domain](/assets/schema.jpeg)
 
 # Contribution :
 
