@@ -24,6 +24,6 @@ This is the initial version of FinPartner service app that highlights the diffic
 
 ## The basic dataflow
 
-![FlowChart](asset/FlowChart.png)
+![FlowChart](asset/FlowChart01.png)
 
 ## Non-Functional Requirements
