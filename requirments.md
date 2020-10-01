@@ -23,6 +23,7 @@ This is the initial version of FinPartner service app that highlights the diffic
 - users can participate in the project.
 
 ## The basic dataflow
-![FlowChart](asset/Screenshot from 2020-10-01 17-17-43.png)
+
+![FlowChart](asset/FlowChart.png)
 
 ## Non-Functional Requirements
