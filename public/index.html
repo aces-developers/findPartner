@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+
+</head>
+
+<body>
+  <main>
+    
+    <a href="#" id="oauth" class="google btn"> Login with Google</a>
+    <br>
+    <a href="#" id="oauth_linkedin" class="google btn"> Login with linkedin</a>
+  </main>
+  <script>
+    let URLGoogle = 'https://accounts.google.com/o/oauth2/v2/auth';
+    let URLLinkedIn = "https://www.linkedin.com/oauth/v2/authorization";
+    let options_google = {
+      apiKey: 'AIzaSyCshpZNvljst4M29go41MCgOh8RQWiKNms',
+      response_type: 'code',
+      client_id: '1047333031626-5aj6tflpq3n78344rb2cvj68q1s3je2t.apps.googleusercontent.com',
+      redirect_uri: 'http://localhost:3000/oauth',
+      scope: 'profile email',
+      state: 'http://localhost',
+      access_type: 'offline',
+    }
+
+    let options_linkedin = {
+      response_type: 'code',
+      client_id: '77k05rczj3gyy4',
+      redirect_uri: 'http://localhost:3000/oauth',
+      scope: 'r_liteprofile'
+
+    }
+
+    let QueryString_google = Object.keys(options_google).map((key) => {
+      return `${key}=` + encodeURIComponent(options_google[key]);
+    }).join("&");
+
+    let authURL_google = `${URLGoogle}?${QueryString_google}`;
+    //console.log('authURL : ', authURL)
+    let link_google = document.getElementById('oauth');
+    link_google.setAttribute('href', authURL_google);
+
+
+    let QueryString_linkedin = Object.keys(options_linkedin).map((key) => {
+            return `${key}=` + encodeURIComponent(options_linkedin[key]);
+        }).join("&");
+
+        let authURL_linkedin = `${URLLinkedIn}?${QueryString_linkedin}`;
+
+        let link_linkedin = document.getElementById('oauth_linkedin');
+        link_linkedin.setAttribute('href', authURL_linkedin);
+
+  </script>
+
+</body>
+
+</html>
