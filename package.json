@@ -39,7 +39,9 @@
     "request": "^2.88.2",
     "superagent": "^6.1.0"
 
-    "nodemon": "^2.0.4"
+ 
+   
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "jest": "^26.4.2"
