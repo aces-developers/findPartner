@@ -159,7 +159,7 @@ describe('Auth Router', () => {
    
     const getProjRes1 = await mockRequest.put(`/project/${ProjectID}`).send(updatedProj)
     .set('Authorization', `Bearer ${userToken}`);
-    console.log('update.body',getProjRes1.statusCode)
+    // console.log('update.body',getProjRes1.statusCode)
     expect( getProjRes1.statusCode).toBe(200);
 
   });
@@ -185,8 +185,111 @@ describe('Auth Router', () => {
     
      const getProjRes1 = await mockRequest.delete(`/project/${ProjectID}`).send(updatedProj)
      .set('Authorization', `Bearer ${userToken}`);
-     console.log('update.body',getProjRes1.statusCode)
+    //  console.log('update.body',getProjRes1.statusCode)
      expect( getProjRes1.statusCode).toBe(200);
  
    });
+
+//********************************************************************* */
+
+it('can get all users',async ()=>{
+  const userData = {
+    username: 'Ahmad03',
+    password: '123',
+    fullname: 'AHMADK03',
+    email: 'aHMADK03@jo.com',
+    skillCat:'Engineering',
+    skill: 'web-DEV'
+    };
+        await mockRequest.post('/signup').send(userData);
+  const results = await mockRequest.post('/signin').auth('Ahmad03', '123');
+  const userToken = results.body.token;
+  const getUsersRes = await mockRequest.get(`/users`)
+  .set('Authorization', `Bearer ${userToken}`);
+  // console.log('getUserRes.body',getUserRes.body)
+  expect( getUsersRes.statusCode).toBe(201);
+});
+//********************************************************************* */
+
+it('can get a user', async () => {
+
+  const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+  const userToken = results.body.token;
+
+  const getUserRes = await mockRequest.get(`/user/${results.body.user._id}`)
+  .set('Authorization', `Bearer ${userToken}`);
+  // console.log('getUserRes.body',getUserRes.statusCode)
+  expect( getUserRes.statusCode).toBe(201);
+});
+//********************************************************************* */
+it('can update a user',async ()=>{
+  let updatedUser={
+    username: 'Ahmad01',
+    password: '123',
+    fullname: 'AHMADK01',
+    email: 'aHMADK01@jo.com',
+    skillCat:'Engineering',
+    skill: 'web-DEV UpdatedUpdatedUpdated'
+   
+  }
+   const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+  
+   const userToken = results.body.token;
+   const getUserRes = await mockRequest.get(`/users`)
+   .set('Authorization', `Bearer ${userToken}`);
+
+   let userID = results.body.user._id;
+  
+   const getUserRes1 = await mockRequest.put(`/user/${userID}`).send(updatedUser)
+   .set('Authorization', `Bearer ${userToken}`);
+  //  console.log('update.body',getUserRes1.statusCode)
+   expect( getUserRes1.statusCode).toBe(201);
+
+ });
+//********************************************************************* */
+it('can delete a user',async ()=>{
+  let updatedUser={
+    username: 'Ahmad011',
+    password: '123',
+    fullname: 'AHMADK011',
+    email: 'aHMADK011@jo.com',
+    skillCat:'Engineering',
+    skill: 'web-DEV UpdatedUpdatedUpdated'
+   
+  }
+   const results = await mockRequest.post('/signin').auth('Ahmad02', '123');
+  
+   const userToken = results.body.token;
+   const getUserRes = await mockRequest.get(`/users`)
+   .set('Authorization', `Bearer ${userToken}`);
+  //  console.log('results.body>>>>>>>>>>',results.body)
+
+   let userID = results.body.user._id;
+   const getUserRes1 = await mockRequest.delete(`/user/${userID}`).send(updatedUser)
+   .set('Authorization', `Bearer ${userToken}`);
+   expect( getUserRes1.statusCode).toBe(200);
+
+ });
+ //********************************************************************* */
+
+it('can search for a user', async () => {
+  const userData = {
+    username: 'Ahmad077',
+    password: '123',
+    fullname: 'AHMADK077',
+    email: 'aHMADK077@jo.com',
+    skillCat:'Engineering',
+    skill: 'web-DEV'
+    };
+        await mockRequest.post('/signup').send(userData);
+  const results = await mockRequest.post('/signin').auth('Ahmad077', '123')
+  const userToken = results.body.token;
+  // console.log('PRINT THE Ahmad077 OBJ',results.body)
+
+let searchTerm = 'Ah';
+  const getUserRes = await mockRequest.get(`/search?q=${searchTerm}&search=username`)
+  .set('Authorization', `Bearer ${userToken}`);
+  // console.log('getUserRes.body',getUserRes.body)
+  expect( getUserRes.statusCode).toBe(200);
+});
 });
