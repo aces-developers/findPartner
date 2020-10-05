@@ -2,21 +2,191 @@
 
 const { server } = require('../lib/server');
 const supergoose = require('@code-fellows/supergoose');
-
 const mockRequest = supergoose(server);
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const projectSchema = require('../lib/collections-schema/projects/project-schema')
 
 describe('Auth Router', () => {
+//********************************************************************* */
+
   it('can sign up', async () => {
     const userData = {
       username: 'Ahmad',
       password: '123',
       fullname: 'AHMADK',
       email: 'aHMADK@jo.com',
-      skill: 'web-DEV',
+      skillCat:'Engineering',
+      skill: 'web-DEV'
     };
     const results = await mockRequest
       .post('/signup')
       .send(userData);
     expect(results.body['username']).toEqual(userData['username']);
   });
+//********************************************************************* */
+
+  it('can signin with basic', async () => {
+    const userData = {
+      username: 'Ahmad01',
+      password: '123',
+      fullname: 'AHMADK01',
+      email: 'aHMADK01@jo.com',
+      skillCat:'Engineering',
+      skill: 'web-DEV'
+      };
+          await mockRequest.post('/signup').send(userData);
+    const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+    const token = jwt.verify(results.body.token, process.env.JWT_SECRET_KEY);
+    console.log('results.body.user._id',results.body.user._id)
+    console.log('results.body.tokemn',results.body.token)
+    expect(token).toBeDefined();
+  });
+//********************************************************************* */
+
+  it('can add new project', async () => {
+    const userData = {
+      username: 'Ahmad01',
+      password: '123',
+      fullname: 'AHMADK01',
+      email: 'aHMADK01@jo.com',
+      skillCat:'Engineering',
+      skill: 'web-DEV'
+      };
+     
+          await mockRequest.post('/signup').send(userData);
+    const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+    // const token = jwt.verify(results.body.token, process.env.JWT_SECRET_KEY);
+    const userToken = results.body.token;
+    const proj = 
+    {
+      _ownerId: results.body.user._id,
+      title: 'ProjAhmad01',
+      description: 'DESCRIPTION',
+      category: 'Science',
+      budget: '987',
+      skill: 'IT IS OPTIONAL',
+      lacation: 'JOR'
+    }
+    const projectRes = await mockRequest.post('/newproject').send(proj)
+    .set('Authorization', `Bearer ${userToken}`);
+    // console.log(projectRes.body)
+    expect( projectRes.type).toBe('application/json');
+  });
+//********************************************************************* */
+
+  it('can get a project', async () => {
+    const userData = {
+      username: 'Ahmad02',
+      password: '123',
+      fullname: 'AHMADK02',
+      email: 'aHMADK02@jo.com',
+      skillCat:'Engineering',
+      skill: 'web-DEV'
+      };
+     
+          await mockRequest.post('/signup').send(userData);
+    const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+    // const token = jwt.verify(results.body.token, process.env.JWT_SECRET_KEY);
+    const userToken = results.body.token;
+    const proj = 
+    {
+      _ownerId: results.body.user._id,
+      title: 'ProjAhmad02',
+      description: 'DESCRIPTION02',
+      category: 'Science',
+      budget: '987',
+      skill: 'IT IS OPTIONAL',
+      lacation: 'JOR'
+    }
+    const projectRes = await mockRequest.post('/newproject').send(proj)
+    .set('Authorization', `Bearer ${userToken}`);
+    const getProjRes = await mockRequest.get(`/project/${results.body.user._id}`)
+    .set('Authorization', `Bearer ${userToken}`);
+    // console.log('getProjRes.body',getProjRes.statusCode)
+    expect( getProjRes.statusCode).toBe(200);
+  });
+  const userData = {
+    username: 'Ahmad03',
+    password: '123',
+    fullname: 'AHMADK03',
+    email: 'aHMADK03@jo.com',
+    skillCat:'Engineering',
+    skill: 'web-DEV'
+    };
+//********************************************************************* */
+
+  it('can get all projects',async ()=>{
+    const userData = {
+      username: 'Ahmad03',
+      password: '123',
+      fullname: 'AHMADK03',
+      email: 'aHMADK03@jo.com',
+      skillCat:'Engineering',
+      skill: 'web-DEV'
+      };
+          await mockRequest.post('/signup').send(userData);
+    const results = await mockRequest.post('/signin').auth('Ahmad03', '123');
+    // const token = jwt.verify(results.body.token, process.env.JWT_SECRET_KEY);
+    const userToken = results.body.token;
+    const getProjRes = await mockRequest.get(`/allprojects`)
+    .set('Authorization', `Bearer ${userToken}`);
+    console.log('getProjRes.body',getProjRes.body)
+    // console.log('getProjRes.body',getProjRes.statusCode)
+    expect( getProjRes.statusCode).toBe(201);
+  });
+
+
+//********************************************************************* */
+  it('can update a project',async ()=>{
+   let updatedProj={
+    title: 'ProjAhmad01',
+    description: 'DESCRIPTION updatedupdatedupdated',
+    category: 'Science',
+    budget: '987',
+    skill: 'IT IS OPTIONAL',
+    lacation: 'JOR'
+    
+   }
+    const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+   
+    const userToken = results.body.token;
+    const getProjRes = await mockRequest.get(`/allprojects`)
+    .set('Authorization', `Bearer ${userToken}`);
+    let ProjectID = getProjRes.body[0]._id;
+
+    let ownerId = results.body.user._id;
+   
+    const getProjRes1 = await mockRequest.put(`/project/${ProjectID}`).send(updatedProj)
+    .set('Authorization', `Bearer ${userToken}`);
+    console.log('update.body',getProjRes1.statusCode)
+    expect( getProjRes1.statusCode).toBe(200);
+
+  });
+  //********************************************************************* */
+  it('can delete a project',async ()=>{
+    let updatedProj={
+     title: 'ProjAhmad01',
+     description: 'DESCRIPTION updatedupdatedupdated',
+     category: 'Science',
+     budget: '987',
+     skill: 'IT IS OPTIONAL',
+     lacation: 'JOR'
+     
+    }
+     const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+    
+     const userToken = results.body.token;
+     const getProjRes = await mockRequest.get(`/allprojects`)
+     .set('Authorization', `Bearer ${userToken}`);
+     let ProjectID = getProjRes.body[0]._id;
+ 
+     let ownerId = results.body.user._id;
+    
+     const getProjRes1 = await mockRequest.delete(`/project/${ProjectID}`).send(updatedProj)
+     .set('Authorization', `Bearer ${userToken}`);
+     console.log('update.body',getProjRes1.statusCode)
+     expect( getProjRes1.statusCode).toBe(200);
+ 
+   });
 });
