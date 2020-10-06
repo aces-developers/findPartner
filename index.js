@@ -11,7 +11,7 @@ const mongooseOptions = {
   useFindAndModify: false,
   useUnifiedTopology: true,
 };
-let MONGOOSE_URL = process.env.MONGOOSE_URL;
+let MONGOOSE_URL = process.env.MONGOOSE_URI;
 mongoose.connect(MONGOOSE_URL, mongooseOptions)
   .then(()=>console.log('mongodb connected'))
   .catch(err=> console.log(err));
