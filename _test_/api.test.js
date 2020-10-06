@@ -211,9 +211,34 @@ describe('Auth Router', () => {
   });
   //********************************************************************* */
 
+  it('can rate a user', async () => {
+   
+    const results = await mockRequest.post('/signin').auth('Ahmad03', '123');
+    const userToken = results.body.token;
+    const getUserRes = await mockRequest.get(`/users`)
+      .set('Authorization', `Bearer ${userToken}`);
+    // console.log('ALL USERS:::::::::', getUserRes.body)
+    console.log('results.body.user._id:::::::::', results.body.user._id)
+
+    const rattedUser = {
+      _userid: results.body.user._id,
+      // _userid: getUserRes.body[0]._id,
+      rating: 5
+    }
+    const results1 = await mockRequest
+      .post('/rate')
+      .send(rattedUser);
+    // console.log('RESULT BODY:::::::::', results1.body)
+    // console.log('RESULT BODY:::::::::', results1.statusCode)
+    expect(results1.statusCode).toBe(200);
+
+    expect(results1.body['_userid']).toEqual(rattedUser['_userid']);
+  });
+  //********************************************************************* */
+
   it('can get a user', async () => {
 
-    const results = await mockRequest.post('/signin').auth('Ahmad01', '123');
+    const results = await mockRequest.post('/signin').auth('Ahmad03', '123');
     const userToken = results.body.token;
 
     const getUserRes = await mockRequest.get(`/user/${results.body.user._id}`)
@@ -293,18 +318,72 @@ describe('Auth Router', () => {
     expect(getUserRes.statusCode).toBe(200);
   });
 
- 
+  // //********************************************************************* */
 
-  /* it('the fetch fails with an error', async done =>
-   { 
-     expect.assertions(1);
-     try { await fetchData(); 
-    } catch (e) { 
-      expect(e).toMatch('error'); 
-    } }); 
-   */
- 
- 
- 
+  // it('can rate a user', async () => {
+   
+  //   const results = await mockRequest.post('/signin').auth('Ahmad077', '123');
+  //   const userToken = results.body.token;
+  //   const getUserRes = await mockRequest.get(`/users`)
+  //     .set('Authorization', `Bearer ${userToken}`);
+  //   // console.log('ALL USERS:::::::::', getUserRes.body)
 
+  //   const rattedUser = {
+  //     _userid: getUserRes.body[0]._id,
+  //     rating: 5
+  //   }
+  //   const results1 = await mockRequest
+  //     .post('/rate')
+  //     .send(rattedUser);
+  //   // console.log('RESULT BODY:::::::::', results1.body)
+  //   // console.log('RESULT BODY:::::::::', results1.statusCode)
+  //   expect(results1.statusCode).toBe(200);
+
+  //   expect(results1.body['_userid']).toEqual(rattedUser['_userid']);
+  // });
+   //********************************************************************* */
+
+   it('can apply for a project', async () => {
+    
+    const results = await mockRequest.post('/signin').auth('Ahmad077', '123');
+    const userToken = results.body.token;
+    const getProjRes = await mockRequest.get(`/allprojects`)
+    .set('Authorization', `Bearer ${userToken}`);
+    // console.log('getProjRes.body========>',getProjRes.body);
+    const targetProject = getProjRes.body[0]._id;
+    const getUserRes1 = await mockRequest.post(`/apply/${targetProject}`)
+      .set('Authorization', `Bearer ${userToken}`);
+      // console.log('it is me ',getUserRes1.body)
+    expect(getUserRes1.statusCode).toBe(201);
+  
+  });
+    //********************************************************************* */
+
+    it('can return all projects That spacifc user applied on ', async () => {
+    
+      const results = await mockRequest.post('/signin').auth('Ahmad077', '123');
+      const userToken = results.body.token;
+      const getUserRes1 = await mockRequest.get(`/allapply`)
+        .set('Authorization', `Bearer ${userToken}`);
+        // console.log('it is me ',getUserRes1.body)
+      expect(getUserRes1.statusCode).toBe(201);
+    
+    });
+      //********************************************************************* */
+
+      it('can return all users whose applied in spacifc project ', async () => {
+    
+        const results = await mockRequest.post('/signin').auth('Ahmad077', '123');
+        const userToken = results.body.token;
+        const getProjRes = await mockRequest.get(`/allprojects`)
+        .set('Authorization', `Bearer ${userToken}`);
+        // console.log('getProjRes.body========>',getProjRes.body);
+        const targetProject = getProjRes.body[0]._id;
+        const getUserRes1 = await mockRequest.get(`/allapplyuser/${targetProject}`)
+        .set('Authorization', `Bearer ${userToken}`);
+        // console.log('it is me ',getUserRes1.body)
+      expect(getUserRes1.statusCode).toBe(201);
+       
+      
+      });
 });
