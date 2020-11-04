@@ -9,7 +9,7 @@ const mongooseOptions = {
   useUnifiedTopology: true,
 };
 
-let MONGOOSE_URL = process.env.MONGOOSE_URI;
+let MONGOOSE_URL = process.env.MONGO_WALEED;
 mongoose.connect(MONGOOSE_URL, mongooseOptions)
   .then(()=>console.log('mongodb connected'))
   .catch(err=> console.log(err));
