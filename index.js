@@ -1,6 +1,6 @@
 'use strict';
 const mongoose = require('mongoose');
-const serverModule =require('./lib/server');
+const serverModule = require('./lib/server');
 require('dotenv').config();
 const mongooseOptions = {
   useNewUrlParser: true,
@@ -10,7 +10,8 @@ const mongooseOptions = {
 };
 
 let MONGOOSE_URL = process.env.MONGO_WALEED;
-mongoose.connect(MONGOOSE_URL, mongooseOptions)
-  .then(()=>console.log('mongodb connected'))
-  .catch(err=> console.log(err));
-  serverModule.start();
+mongoose
+  .connect(MONGOOSE_URL, mongooseOptions)
+  .then(() => console.log('mongodb connected'))
+  .catch((err) => console.log(err));
+serverModule.start();
