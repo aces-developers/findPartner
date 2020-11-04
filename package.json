@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/aces-developers/findPartner/issues"
   },
-  "homepage": "https://github.com/aces-developers/findPartner#readme",
+  "homepage": "/",
   "dependencies": {
     "base-64": "^0.1.0",
     "bcrypt": "^5.0.0",
