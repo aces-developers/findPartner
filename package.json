@@ -7,6 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
+    "start": "node index.js",
     "server": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest --verbose --coverage ",
@@ -23,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/aces-developers/findPartner/issues"
   },
-  "homepage": "/",
+  "homepage": "https://github.com/aces-developers/findPartner#readme",
   "dependencies": {
     "base-64": "^0.1.0",
     "bcrypt": "^5.0.0",
@@ -46,5 +47,8 @@
   "devDependencies": {
     "@code-fellows/supergoose": "^1.0.11",
     "jest": "^26.4.2"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
